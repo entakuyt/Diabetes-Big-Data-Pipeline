@@ -1,0 +1,71 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: diabetes_mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  spark-master:
+    image: bitnami/spark:3.5
+    container_name: diabetes_spark_master
+    environment:
+      - SPARK_MODE=master
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+    ports:
+      - "8080:8080"   # Spark Web UI
+      - "7077:7077"   # Spark master port
+    volumes:
+      - .:/app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  spark-worker:
+    image: bitnami/spark:3.5
+    container_name: diabetes_spark_worker
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=2G
+      - SPARK_WORKER_CORES=2
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+    depends_on:
+      spark-master:
+        condition: service_healthy
+    volumes:
+      - .:/app
+
+  pipeline:
+    image: bitnami/spark:3.5
+    container_name: diabetes_pipeline
+    environment:
+      - SPARK_MASTER=spark://spark-master:7077
+      - MONGO_URI=mongodb://mongodb:27017/
+      - DATA_PATH=/app/data/diabetes.csv
+    depends_on:
+      spark-master:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: >
+      bash -c "pip install -r requirements.txt &&
+               python -m src.pipeline /app/data/diabetes.csv"
+
+volumes:
+  mongo_data:
