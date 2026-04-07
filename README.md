@@ -1,192 +1,237 @@
-# Big Data Pipeline for Diabetes Analysis
 
-**Apache Spark + MongoDB**
+# Diabetes Big Data Pipeline: Spark + MongoDB
 
-## 📌 Overview
+<div align="center">
 
-This project implements a **Big Data pipeline** to analyze a diabetes healthcare dataset using:
+![Spark](https://img.shields.io/badge/Apache_Spark-E25A1C?style=for-the-badge&logo=apachespark&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 
-* **Apache Spark (PySpark)** for large-scale data processing
-* **MongoDB** for flexible data storage
-* **Python (Pandas, Matplotlib, Seaborn)** for visualization
+**End-to-End Big Data Pipeline for Diabetes Healthcare Analysis**
 
-The dataset includes patient information such as age, gender, BMI, blood glucose level, and diabetes status. 
+[Quick-Start](#-quick-start) · [Architecture](#-architecture) · [Features](#-core-features) · [Insights](#-key-insights)
 
-[Diabetes Dataset (Kaggle)](https://www.kaggle.com/datasets/priyamchoksi/100000-diabetes-clinical-dataset)
----
-
-## 🎯 Objectives
-
-* Store healthcare data efficiently using MongoDB
-* Process and analyse data using Apache Spark
-* Perform queries using Spark SQL
-* Improve performance using indexing
-* Visualize key insights from the data 
+</div>
 
 ---
 
-## 📊 Dataset
+## 🎯 Project Overview
 
-* Source: Kaggle (Diabetes dataset)
-* Size: ~100,000 records
-* Key features:
+The **Diabetes Big Data Pipeline** is a complete big data solution that ingests, stores, processes, and analyzes a large-scale diabetes healthcare dataset (~100,000 records) using **Apache Spark** and **MongoDB**.
 
-  * Age
-  * Gender
-  * BMI
-  * Blood glucose level
-  * Smoking history
-  * Diabetes (0/1) 
+This pipeline demonstrates an efficient workflow for handling healthcare data — from ingestion to insightful analysis — enabling better identification of high-risk diabetes patients based on key medical and demographic factors.
 
----
-
-## 🏗️ System Architecture
-
-```text
-CSV Dataset → Pandas → MongoDB → Spark → Analysis → Visualization
-```
+### ✨ Key Objectives
+- Efficiently store large healthcare datasets in MongoDB
+- Perform distributed data processing with Apache Spark
+- Analyze diabetes risk factors using Spark SQL
+- Generate clear visualizations and actionable healthcare insights
 
 ---
 
-## 🔄 Methodology
+## 🏗️ Architecture
+
+
+                                    ╔═══════════════╗
+                                    ║  CSV Dataset  ║
+                                    ║  (Raw Input)  ║
+                                    ╚───────┬───────╝
+                                            │
+                                            ▼
+                                    ╔═══════════╗
+                                    ║  Pandas   ║
+                                    ║ (Python)  ║
+                                    ╚─────┬─────╝
+                                          │
+                    ┌─────────────────────┼─────────────────────┐
+                    │                     │                     │
+                    ▼                     ▼                     ▼
+            ╔════════════╗         ╔════════════╗        ╔══════════════╗
+            ║  MongoDB   ║         ║  PyMongo   ║        ║   Spark      ║
+            ║ (Storage)  ║ ◄────── ║ Extraction║ ──────► ║ DataFrame    ║
+            ╚════════════╝         ╚════════════╝        ║ (Distributed)║
+                                                         ╚──────┬───────╝
+                                                                │
+                                                                ▼
+                                                    ╔═══════════════════╗
+                                                    ║  Spark SQL +      ║
+                                                    ║  Transformations  ║
+                                                    ║  + Aggregations   ║
+                                                    ╚─────────┬─────────╝
+                                                              │
+                                                              ▼
+                                                    ╔═══════════════════╗
+                                                    ║  Visualizations   ║
+                                                    ║ (Matplotlib +     ║
+                                                    ║    Seaborn)       ║
+                                                    ╚═══════════════════╝
+
+
+
+---
+
+## 🚀 Core Features
 
 ### 1. Data Ingestion
+- Load CSV dataset using Pandas
+- Batch insertion into MongoDB with duplicate prevention
 
-* Load CSV dataset using Pandas
-* Convert to dictionary format
-* Insert into MongoDB
+### 2. MongoDB Integration
+- Flexible document-based schema for patient records
+- Recommended indexing on key fields (`diabetes`, `location`, etc.)
+- Sharding strategy for future scalability
 
-### 2. Spark Processing
+### 3. Spark Processing
+- Read data from MongoDB into Spark DataFrame
+- Data cleaning and feature engineering (age groups, high-risk flags)
+- Distributed transformations using PySpark
 
-* Read data from MongoDB into Spark
-* Clean and preprocess data:
+### 4. Advanced Analysis
+- Spark SQL queries for diabetes percentage by location
+- Aggregations and ranking of high-risk areas
+- Correlation analysis between medical features
 
-  * Remove null values
-  * Convert data types
-  * Filter valid records
-
-### 3. Data Analysis
-
-Using Spark SQL:
-
-* Count patients by location
-* Calculate average BMI
-* Compute diabetes percentage
-* Rank patients by glucose level
-
-### 4. Performance Optimization
-
-* Created index on `location` field in MongoDB
-* Compared query performance:
-
-  * Without index → slower
-  * With index → faster 
-
-### 5. Visualization
-
-* Age distribution vs diabetes
-* Correlation heatmap
-* BMI comparison
+### 5. Visualizations & Insights
+- Top 10 states by diabetes prevalence (bar chart)
+- Risk factor exploration through visualizations
+- Clean and publication-ready charts
 
 ---
 
-## 📈 Key Results
+## 📦 Project Structure
 
-* Higher BMI is associated with higher diabetes risk
-* Some locations show higher diabetes rates
-* Blood glucose level is a strong indicator of diabetes
-* MongoDB indexing significantly improves query performance 
-
----
-
-## ⚙️ Technologies Used
-
-* Python
-* PySpark
-* MongoDB
-* Pandas
-* Matplotlib
-* Seaborn
+```text
+Diabetes-Big-Data-Pipeline/
+├── Project_Fixed.ipynb          # Main Jupyter Notebook (complete pipeline)
+├── diabetes_dataset.csv         # Raw input dataset
+├── README.md
+├── docs/                        # Project documentation, reports, and notes
+├── clean_diabetes_data/         # Processed dataset stored locally for faster queries (not committed)
+└── venv/                        # Virtual environment (not committed)
+```
 
 ---
 
-## 🚀 How to Run
-## Virtual Environment Setup (Recommended)
+## 🚀 Quick-Start
 
-It is recommended to use a virtual environment to manage dependencies.
+### Prerequisites
+- Python 3.10 or higher
+- MongoDB running locally on `localhost:27017`
+- Jupyter Notebook / JupyterLab
 
-### 🪟 Windows
+### 1. Clone the Repository
+```bash
+git clone https://github.com/your-username/diabetes-big-data-pipeline.git
+cd diabetes-big-data-pipeline
+```
 
-Create a virtual environment:
+### 2. Create and Activate Virtual Environment
+
+**Windows**
 ```bash
 python -m venv venv
-```
-
-1. Install dependencies:
-
-```bash
-pip install pyspark pymongo pandas matplotlib seaborn
-```
-Activate it:
-
-```bash
 venv\Scripts\activate
 ```
 
-### 🍎 macOS / 🐧 Linux
-
-Create a virtual environment:
-
+**macOS & Linux**
 ```bash
 python3 -m venv venv
-```
-Activate it:
-
-```bash
 source venv/bin/activate
 ```
-2. Start MongoDB
 
-### 🪟 Windows
+### 3. Install Dependencies
+```bash
+pip install pyspark pymongo pandas matplotlib seaborn
+```
 
-If MongoDB is installed as a service:
+### 4. Start MongoDB
+
+**Windows**
 ```bash
 net start MongoDB
 ```
-Or run manually:
 
-```bash
-"C:\\Program Files\\MongoDB\\Server\\<version>\\bin\\mongod.exe"
-```
-
-### 🍎 macOS
-
-If installed with Homebrew:
-
+**macOS**
 ```bash
 brew services start mongodb-community
 ```
 
-Or run manually:
-
+**Linux**
 ```bash
-mongod
+sudo systemctl start mongod
 ```
 
-3. Open and run:
-
+### 5. Run the Pipeline
 ```bash
-Project_Fixed.ipynb
+jupyter notebook
 ```
-
-## 👥 Team Members
-
-* Prayusha Poudel
-* Tuo Yan
-* Dan Le
+Open **`Project_Fixed.ipynb`** and run all cells sequentially.
 
 ---
 
-## 📜 License
+## 📊 Key Insights
 
-This project is for academic purposes.
+- Higher BMI, HbA1c level, and blood glucose are strongly associated with diabetes
+- Certain geographic locations show significantly higher diabetes prevalence
+- Patients with hypertension and older age groups are at elevated risk
+- Proper MongoDB indexing significantly improves query performance
+
+---
+
+## 🛠️ Technologies Used
+
+### Core Technologies
+- **Apache Spark 4.1.1** – Distributed big data processing
+- **MongoDB** – Flexible NoSQL database
+- **PyMongo** – MongoDB Python driver
+- **PySpark** – Python interface for Spark
+
+### Supporting Tools
+- **Pandas** – Data manipulation
+- **Matplotlib & Seaborn** – Data visualization
+- **Spark SQL** – Declarative querying
+
+---
+
+## 📈 Performance Highlights
+
+- Successfully processed **100,000 patient records**
+- Efficient batch ingestion into MongoDB
+- Fast distributed transformations with Spark
+- Optimized queries through proper indexing
+
+---
+
+## 👥 Team Members
+
+- Tuo Yan
+- Prayusha Poudel
+- Dan Le
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- Apache Spark and MongoDB open-source communities
+- Kaggle for providing the Diabetes Healthcare Dataset
+- All libraries and tools that made this pipeline possible
+
+---
+
+<div align="center">
+
+**Built with ❤️ using Apache Spark, MongoDB, and Python**
+
+![Spark](https://img.shields.io/badge/Apache_Spark-E25A1C?style=flat&logo=apachespark&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat&logo=mongodb&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)
+
+</div>
+
+
