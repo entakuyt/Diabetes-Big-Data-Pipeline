@@ -102,12 +102,15 @@ This pipeline demonstrates an efficient workflow for handling healthcare data �
 
 ```text
 Diabetes-Big-Data-Pipeline/
-├── Project_Fixed.ipynb          # Main Jupyter Notebook (complete pipeline)
-├── diabetes_dataset.csv         # Raw input dataset
-├── README.md
-├── docs/                        # Project documentation, reports, and notes
-├── clean_diabetes_data/         # Processed dataset stored locally for faster queries (not committed)
-└── venv/                        # Virtual environment (not committed)
+├── Project_Fixed.ipynb         # Main Jupyter Notebook (complete pipeline)
+├── README.md                   # Project documentation (overview, setup, usage)
+├── data/                       # Raw datasets
+│   └── diabetes_dataset.csv    # Original input dataset
+├── docs/                       # Project reports and supporting documents
+│   ├── ProjectProposal_Group11.pdf
+│   └── project_report.pdf
+├── clean_diabetes_data/        # Cleaned dataset (Parquet, optimized for fast queries, not committed)
+└── venv/                       # Virtual environment (not committed)
 ```
 
 ---
