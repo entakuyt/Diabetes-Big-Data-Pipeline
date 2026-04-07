@@ -104,6 +104,10 @@ This pipeline demonstrates an efficient workflow for handling healthcare data �
 Diabetes-Big-Data-Pipeline/
 ├── Project_Fixed.ipynb         # Main Jupyter Notebook (complete pipeline)
 ├── README.md                   # Project documentation (overview, setup, usage)
+├── requirements.txt            # Python dependencies
+├── Dockerfile                  # Defines Python + Spark + Jupyter environment
+├── docker-compose.yml          # Runs app container + MongoDB service
+├── .gitignore                  # Specifies files and folders to ignore in Git
 ├── data/                       # Raw datasets
 │   └── diabetes_dataset.csv    # Original input dataset
 ├── docs/                       # Project reports and supporting documents
@@ -169,6 +173,28 @@ sudo systemctl start mongod
 jupyter notebook
 ```
 Open **`Project_Fixed.ipynb`** and run all cells sequentially.
+
+## 🐳 Run with Docker
+
+### Prerequisites
+- Docker installed  
+- Docker Compose installed  
+
+---
+
+```bash
+git clone https://github.com/your-username/diabetes-big-data-pipeline.git
+cd diabetes-big-data-pipeline
+docker-compose up --build
+```
+
+### 📓 Access Notebook & Data
+
+Once the Docker containers are running, open:
+
+```text
+http://localhost:8888/lab
+```
 
 ---
 
