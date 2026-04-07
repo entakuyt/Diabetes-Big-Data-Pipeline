@@ -1,0 +1,23 @@
+services:
+  mongodb:
+    image: mongo:7
+    container_name: diabetes-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  app:
+    build: .
+    container_name: diabetes-pipeline
+    ports:
+      - "8888:8888"
+    volumes:
+      - .:/app
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017/diabetes_db
+    depends_on:
+      - mongodb
+
+volumes:
+  mongodb_data:
